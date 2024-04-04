@@ -40,7 +40,9 @@ class RegistrationActivity : AppCompatActivity() {
                 saveUserData(phone, name, lastName) // Сохраняем данные пользователя
                 Toast.makeText(this, "Регистрация прошла успешно: $name $lastName, телефон: $phone", Toast.LENGTH_LONG).show()
 
-                val intent = Intent(this, MainActivity::class.java)
+                val intent = Intent(this@RegistrationActivity, MainActivity::class.java)
+                intent.putExtra("name", name + " " + lastName)
+                intent.putExtra("number", phone)
                 startActivity(intent)
                 finish() // Закройте эту Activity, чтобы пользователь не мог вернуться назад
             } else {

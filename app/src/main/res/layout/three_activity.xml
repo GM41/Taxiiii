@@ -35,16 +35,15 @@
 
     <TextView
         android:id="@+id/textView6"
-        android:layout_width="290dp"
-        android:layout_height="118dp"
+        android:layout_width="357dp"
+        android:layout_height="121dp"
         android:text="TextView"
-        android:textSize="34sp"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView5"
-        app:layout_constraintVertical_bias="0.506" />
+        app:layout_constraintVertical_bias="0.341" />
 
     <Button
         android:id="@+id/button2"
@@ -53,8 +52,10 @@
         android:text="Изменить маршрут"
         app:layout_constraintBottom_toTopOf="@+id/textView6"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView5" />
+        app:layout_constraintTop_toBottomOf="@+id/textView5"
+        app:layout_constraintVertical_bias="0.61" />
 
     <Button
         android:id="@+id/button3"
@@ -62,6 +63,18 @@
         android:layout_height="wrap_content"
         android:text="Вызвать такси"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView6"
+        app:layout_constraintVertical_bias="0.742" />
+
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="354dp"
+        android:layout_height="129dp"
+        android:text="TextView"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/button3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView6" />

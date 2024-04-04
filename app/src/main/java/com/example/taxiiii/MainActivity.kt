@@ -8,6 +8,7 @@ import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -38,11 +39,13 @@ class MainActivity : AppCompatActivity(), LocationListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         MapKitFactory.setApiKey("435b8ab4-1d23-4ec6-af60-55032d49f3f4")
-        MapKitFactory.initialize(this)
+        MapKitFactory.initialize(this@MainActivity)
         setContentView(R.layout.activity_main)
 
         mapView = findViewById(R.id.mapview)
         locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        val name = intent.getStringExtra("name")
+        val phone = intent.getStringExtra("number")
 
 
         findViewById<Button>(R.id.my_button).setOnClickListener {
@@ -57,26 +60,27 @@ class MainActivity : AppCompatActivity(), LocationListener {
 
                 placemark = map.mapObjects.addPlacemark(point).apply {
                     opacity = 0.5f
-                    setIcon(ImageProvider.fromResource(this@MainActivity, R.drawable.ic_pin))
+                    setIcon(ImageProvider.fromResource(this@MainActivity, R.drawable.img))
                 }
                 newPoint = Point(point.latitude, point.longitude)
             }
 
-            override fun onMapLongTap(p0: com.yandex.mapkit.map.Map, p1: Point) {
-                TODO("Not yet implemented")
+            override fun onMapLongTap(p0: com.yandex.mapkit.map.Map, p1: Point){
             }
         })
 
         findViewById<Button>(R.id.button4).setOnClickListener {
             val intent = Intent(this, ThirdActivity::class.java).apply {
+                putExtra("name", name)
+                putExtra("number", phone)
                 putExtra("my_latitude", userLocation.latitude)
                 putExtra("my_longitude", userLocation.longitude)
                 putExtra("new_point_latitude", newPoint.latitude)
                 putExtra("new_point_longitude", newPoint.longitude)
             }
             startActivity(intent)
+            finish()
         }
-
     }
 
     private fun checkLocationPermissionAndGetLocation() {
@@ -108,7 +112,7 @@ class MainActivity : AppCompatActivity(), LocationListener {
 
     override fun onLocationChanged(location: Location) {
         userLocation = Point(location.latitude, location.longitude)
-        mapView.map.move(CameraPosition(userLocation, 14.0f, 0.0f, 0.0f), Animation(Animation.Type.SMOOTH, 5f), null)
+        mapView.map.move(CameraPosition(userLocation, 14.0f, 0.0f, 0.0f), Animation(Animation.Type.SMOOTH, 1f), null)
         mapView.map.mapObjects.addPlacemark(userLocation).apply {
             setIcon(ImageProvider.fromResource(this@MainActivity, R.drawable.ic_pin))
         }
@@ -131,5 +135,12 @@ class MainActivity : AppCompatActivity(), LocationListener {
         mapView.onStop()
         MapKitFactory.getInstance().onStop()
         super.onStop()
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+    }
+    override fun onDestroy() {
+        super.onDestroy()
     }
 }
