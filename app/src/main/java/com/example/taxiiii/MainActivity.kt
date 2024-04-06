@@ -70,16 +70,20 @@ class MainActivity : AppCompatActivity(), LocationListener {
         })
 
         findViewById<Button>(R.id.button4).setOnClickListener {
-            val intent = Intent(this, ThirdActivity::class.java).apply {
-                putExtra("name", name)
-                putExtra("number", phone)
-                putExtra("my_latitude", userLocation.latitude)
-                putExtra("my_longitude", userLocation.longitude)
-                putExtra("new_point_latitude", newPoint.latitude)
-                putExtra("new_point_longitude", newPoint.longitude)
+            if(!::userLocation.isInitialized || newPoint == null) {
+                Toast.makeText(this@MainActivity, "Нужны две точки для создания маршрута", Toast.LENGTH_LONG).show()
+            }else{
+                val intent = Intent(this, ThirdActivity::class.java).apply {
+                    putExtra("name", name)
+                    putExtra("number", phone)
+                    putExtra("my_latitude", userLocation.latitude)
+                    putExtra("my_longitude", userLocation.longitude)
+                    putExtra("new_point_latitude", newPoint.latitude)
+                    putExtra("new_point_longitude", newPoint.longitude)
+                }
+                startActivity(intent)
+                finish()
             }
-            startActivity(intent)
-            finish()
         }
     }
 
@@ -135,6 +139,10 @@ class MainActivity : AppCompatActivity(), LocationListener {
         mapView.onStop()
         MapKitFactory.getInstance().onStop()
         super.onStop()
+    }
+
+    override fun onResume() {
+        super.onResume()
     }
 
     override fun onRestart() {

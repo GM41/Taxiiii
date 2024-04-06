@@ -11,7 +11,7 @@ import android.location.Location
 class RegistrationActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.first_activity) // Используйте правильное имя layout
+        setContentView(R.layout.first_activity)
 
         val phoneEditText: EditText = findViewById(R.id.editTextPhone)
         val nameEditText: EditText = findViewById(R.id.editTextText)
@@ -37,14 +37,17 @@ class RegistrationActivity : AppCompatActivity() {
             val lastName = lastNameEditText.text.toString()
 
             if (phone.isNotBlank() && name.isNotBlank() && lastName.isNotBlank()) {
-                saveUserData(phone, name, lastName) // Сохраняем данные пользователя
-                Toast.makeText(this, "Регистрация прошла успешно: $name $lastName, телефон: $phone", Toast.LENGTH_LONG).show()
-
+                saveUserData(phone, name, lastName)
+                if(!sharedPreferences.contains("NAME")) {
+                    Toast.makeText(this,"Регистрация прошла успешно: $name $lastName, телефон: $phone",Toast.LENGTH_LONG).show()
+                }else{
+                    Toast.makeText(this, "Добро пожаловать: $name $lastName!", Toast.LENGTH_LONG).show()
+                }
                 val intent = Intent(this@RegistrationActivity, MainActivity::class.java)
                 intent.putExtra("name", name + " " + lastName)
                 intent.putExtra("number", phone)
                 startActivity(intent)
-                finish() // Закройте эту Activity, чтобы пользователь не мог вернуться назад
+                finish()
             } else {
                 Toast.makeText(this, "Пожалуйста, заполните все поля корректно.", Toast.LENGTH_SHORT).show()
             }
@@ -57,6 +60,6 @@ class RegistrationActivity : AppCompatActivity() {
         editor.putString("PHONE", phone)
         editor.putString("NAME", name)
         editor.putString("LAST_NAME", lastName)
-        editor.apply() // Или editor.commit() для синхронного сохранения
+        editor.apply()
     }
 }

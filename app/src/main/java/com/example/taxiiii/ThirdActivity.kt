@@ -4,11 +4,13 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.location.Geocoder
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.yandex.mapkit.MapKitFactory
 import com.yandex.mapkit.geometry.Point
 import java.util.Locale
 import kotlin.math.roundToInt
@@ -31,8 +33,8 @@ class ThirdActivity: AppCompatActivity() {
         val phone = intent.getStringExtra("number")
         val my_latitude = intent.getDoubleExtra("my_latitude", 0.0)
         val my_longitude = intent.getDoubleExtra("my_longitude", 0.0)
-        val latitude = intent.getDoubleExtra("new_point_latitude", 0.0)
-        val longitude = intent.getDoubleExtra("new_point_longitude", 0.0)
+        val latitude = intent.getDoubleExtra("new_point_latitude", 1.0)
+        val longitude = intent.getDoubleExtra("new_point_longitude", 1.0)
         val my_point = Point(my_latitude, my_longitude)
         val new_point = Point(latitude, longitude)
         val distance = calculateDistance(my_point, new_point);
@@ -51,7 +53,9 @@ class ThirdActivity: AppCompatActivity() {
         route2.text = "Куда: " + address1
 
         changeRoute.setOnClickListener {
+            Log.d("ThirdActivity", "Attempting to start MainActivity")
             val intent1 = Intent(this@ThirdActivity, MainActivity::class.java)
+            intent1.putExtra("ApiKey", "435b8ab4-1d23-4ec6-af60-55032d49f3f4")
             startActivity(intent1)
             finish()
         }
