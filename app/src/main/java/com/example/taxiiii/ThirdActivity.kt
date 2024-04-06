@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.yandex.mapkit.geometry.Point
 import java.util.Locale
+import kotlin.math.roundToInt
 
 class ThirdActivity: AppCompatActivity() {
     @SuppressLint("SetTextI18n")
@@ -20,6 +21,7 @@ class ThirdActivity: AppCompatActivity() {
 
         val name: TextView = findViewById(R.id.textView4)
         val number: TextView = findViewById(R.id.textView5)
+        val dist: TextView = findViewById(R.id.textView8)
         val route1: TextView = findViewById(R.id.textView6)
         val route2: TextView = findViewById(R.id.textView7)
         val changeRoute: Button = findViewById(R.id.button2)
@@ -31,6 +33,9 @@ class ThirdActivity: AppCompatActivity() {
         val my_longitude = intent.getDoubleExtra("my_longitude", 0.0)
         val latitude = intent.getDoubleExtra("new_point_latitude", 0.0)
         val longitude = intent.getDoubleExtra("new_point_longitude", 0.0)
+        val my_point = Point(my_latitude, my_longitude)
+        val new_point = Point(latitude, longitude)
+        val distance = calculateDistance(my_point, new_point);
 
 
         val geocoder = Geocoder(this, Locale.getDefault())
@@ -41,6 +46,7 @@ class ThirdActivity: AppCompatActivity() {
 
         name.text = fullName
         number.text = phone
+        dist.text = "Расстояние: " + distance.toString() + " км."
         route1.text = "Откуда: " + address
         route2.text = "Куда: " + address1
 
@@ -53,6 +59,17 @@ class ThirdActivity: AppCompatActivity() {
         callTaxi.setOnClickListener {
             Toast.makeText(this@ThirdActivity, "Такси вызвано, ожидайте", Toast.LENGTH_LONG).show()
         }
+    }
+
+    fun calculateDistance(pointA: Point, pointB: Point): Double {
+        val R = 6371
+        val latDistance = Math.toRadians(pointB.latitude - pointA.latitude)
+        val lonDistance = Math.toRadians(pointB.longitude - pointA.longitude)
+        val a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2) +
+                Math.cos(Math.toRadians(pointA.latitude)) * Math.cos(Math.toRadians(pointB.latitude)) *
+                Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2)
+        val c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+        return ((((R * c)*100).roundToInt())/100).toDouble()
     }
 
     override fun onStart() {
